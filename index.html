@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changan Lumin - EV Charging Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #171717;
+            /* Tailwind neutral-900 */
+            color: #f5f5f5;
+        }
+
+        /* Custom range slider styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 8px;
+            border-radius: 4px;
+            background: #93c5fd;
+            cursor: pointer;
+            margin-top: -10px;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #52525b;
+            border-radius: 2px;
+        }
+
+        /* Hide arrows on number inputs */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .gradient-border-80 {
+            /* Fallback */
+            border: 2px solid #3b82f6; 
+        }
+
+        .gradient-border-100 {
+            border: 2px solid #22c55e;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center py-10 px-4">
+
+    <!-- Top Text -->
+    <div class="text-center mb-8">
+        <h1 class="text-xl font-semibold mb-3">คำนวณเวลาชาร์จ Changan Lumin</h1>
+        <p class="text-sm text-gray-400">ลองปรับตัวเลข % แบตเตอรี่ หรือค่าไฟของปั๊ม เพื่อดูเวลาและจำนวนเงินที่ระบบประมาณการออกมาได้เลยครับ</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="bg-[#262626] rounded-2xl w-full max-w-4xl p-6 md:p-8 shadow-2xl relative">
+
+        <!-- Header Info -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <h2 class="text-lg font-semibold text-white">ระบบคำนวณการชาร์จ Changan Lumin</h2>
+            <div class="flex gap-6 text-sm">
+                <div class="flex flex-col">
+                    <span class="text-gray-400 mb-1 text-xs font-medium">ความจุแบต</span>
+                    <span class="font-semibold text-white text-base">28 kWh</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-400 mb-1 text-xs font-medium">พลังงานที่ต้องใช้ (80%)</span>
+                    <span class="font-semibold text-white text-base" id="reqEnergy80">16.80 kWh</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-400 mb-1 text-xs font-medium">พลังงานที่ต้องใช้ (100%)</span>
+                    <span class="font-semibold text-white text-base" id="reqEnergy100">22.40 kWh</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inner Dark Box -->
+        <div class="bg-[#171717] rounded-xl p-6 md:p-10 mb-8 border border-neutral-800 relative">
+
+            <!-- Car & Lightning Icon -->
+            <div class="flex justify-center items-center gap-2 mb-8 text-blue-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a2 2 0 0 0-1.6-.8H8.3a2 2 0 0 0-1.6.8L4 11l-5.16.86a1 1 0 0 0-.84.99V16h3m10 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m-8 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0" />
+                </svg>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full max-w-lg mx-auto mb-10 relative">
+                <div class="h-1 w-full bg-neutral-800 rounded-full outline outline-1 outline-neutral-600/60">
+                    <div id="batteryProgressBar" class="h-full bg-green-400 rounded-full transition-all duration-300"
+                        style="width: 20%;"></div>
+                </div>
+                <div class="flex justify-center mt-4">
+                    <span
+                        class="text-xs border border-white/30 text-white rounded-full px-5 py-1.5 bg-neutral-900/50">ระดับปัจจุบัน:
+                        <span id="displaySocLevel">20</span>%</span>
+                </div>
+            </div>
+
+            <!-- Goal Cards Container -->
+            <div class="flex flex-col md:flex-row gap-6">
+
+                <!-- 80% Card -->
+                <div
+                    class="flex-1 gradient-border-80 rounded-xl p-8 bg-[#1f2838] flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(59,130,246,0.15)] transition-transform hover:scale-[1.02]">
+                    <h3 class="text-xl font-semibold text-[#60a5fa] mb-6">เป้าหมาย 80%</h3>
+                    <div class="mb-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="#60a5fa"
+                            stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="12" height="18" x="6" y="4" rx="2" ry="2" fill="transparent" />
+                            <path d="M9 2h6" />
+                            <rect width="8" height="8" x="8" y="12" rx="1" ry="1" fill="#60a5fa" />
+                        </svg>
+                    </div>
+                    <p class="text-sm text-neutral-400 mb-1">เวลาจองที่แนะนำ (ชั่วโมง)</p>
+                    <p class="text-3xl font-bold mb-6 text-white"><span id="time80">0.56</span> <span
+                            class="text-xl font-normal">ชม.</span></p>
+                    <p class="text-sm text-neutral-400 mb-1 mt-2">ประมาณการค่าไฟทั้งหมด (บาท)</p>
+                    <p class="text-xl font-semibold text-white"><span id="cost80">126.00</span></p>
+                </div>
+
+                <!-- 100% Card -->
+                <div
+                    class="flex-1 gradient-border-100 rounded-xl p-8 bg-[#1f2e25] flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(34,197,94,0.15)] transition-transform hover:scale-[1.02]">
+                    <h3 class="text-xl font-semibold text-green-400 mb-6">เป้าหมาย 100%</h3>
+                    <div class="mb-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="#4ade80"
+                            stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="12" height="18" x="6" y="4" rx="2" ry="2" fill="transparent" />
+                            <path d="M9 2h6" />
+                            <rect width="8" height="14" x="8" y="6" rx="1" ry="1" fill="#4ade80" />
+                        </svg>
+                    </div>
+                    <p class="text-sm text-neutral-400 mb-1">เวลาจองที่แนะนำ (ชั่วโมง)</p>
+                    <p class="text-3xl font-bold mb-6 text-white"><span id="time100">0.75</span> <span
+                            class="text-xl font-normal">ชม.</span></p>
+                    <p class="text-sm text-neutral-400 mb-1 mt-2">ประมาณการค่าไฟทั้งหมด (บาท)</p>
+                    <p class="text-xl font-semibold text-white"><span id="cost100">168.00</span></p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex flex-col gap-6 text-sm px-2">
+            <!-- Row 1: SOC and Power -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <!-- Battery % -->
+                <div class="flex items-center gap-4 w-full md:w-3/5">
+                    <span class="font-medium text-neutral-300 whitespace-nowrap min-w-[150px]">แบตเตอรี่ปัจจุบัน (%)</span>
+                    <input type="range" id="socSlider" min="0" max="100" value="20" class="flex-1">
+                    <div
+                        class="bg-[#1e1e1e] border border-neutral-700/50 rounded-full px-2 py-0.5 h-9 flex items-center justify-center shrink-0">
+                        <input type="number" id="currentSoc" min="0" max="100" value="20"
+                            class="w-12 bg-transparent text-center focus:outline-none text-white text-base">
+                    </div>
+                </div>
+
+                <!-- Charger Power -->
+                <div class="flex items-center gap-4 w-full md:w-auto">
+                    <span class="font-medium text-neutral-300 whitespace-nowrap">กำลังตู้ชาร์จ (kW)</span>
+                    <div
+                        class="bg-[#1e1e1e] border border-neutral-700/50 rounded-lg px-2 py-0.5 h-9 flex items-center justify-center shrink-0">
+                        <input type="number" id="chargerPower" value="30"
+                            class="w-16 bg-transparent text-center focus:outline-none text-white text-base">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Power Rate -->
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <div class="flex items-center gap-4 w-full">
+                    <span class="font-medium text-neutral-300 whitespace-nowrap min-w-[150px]">ค่าไฟ (บาท/kWh)</span>
+                    <div
+                        class="bg-[#1e1e1e] border border-neutral-700/50 rounded-lg px-2 py-0.5 h-9 flex items-center justify-center shrink-0">
+                        <input type="number" id="powerRate" value="7.5" step="0.1"
+                            class="w-16 bg-transparent text-center focus:outline-none text-white text-base">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const BATTERY_CAPACITY = 28; // ความจุแบตเตอรี่ Changan Lumin kWh
+
+        // ดึง DOM Elements
+        const socSlider = document.getElementById('socSlider');
+        const currentSoc = document.getElementById('currentSoc');
+        const chargerPower = document.getElementById('chargerPower');
+        const powerRate = document.getElementById('powerRate');
+
+        const reqEnergy80 = document.getElementById('reqEnergy80');
+        const reqEnergy100 = document.getElementById('reqEnergy100');
+
+        const batteryProgressBar = document.getElementById('batteryProgressBar');
+        const displaySocLevel = document.getElementById('displaySocLevel');
+
+        const time80 = document.getElementById('time80');
+        const cost80 = document.getElementById('cost80');
+        const time100 = document.getElementById('time100');
+        const cost100 = document.getElementById('cost100');
+
+        function formatDecimal(value) {
+            return Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function calculate(e) {
+            let soc = parseFloat(currentSoc.value) || 0;
+            let inputPower = parseFloat(chargerPower.value) || 1;
+            let rate = parseFloat(powerRate.value) || 0;
+
+            // Limit bounds
+            if (soc > 100) { soc = 100; }
+            if (soc < 0) { soc = 0; }
+
+            // Sync inputs logic
+            if (e && e.target === socSlider) {
+                currentSoc.value = socSlider.value;
+                soc = parseFloat(socSlider.value);
+            } else if (e && e.target === currentSoc) {
+                socSlider.value = currentSoc.value;
+            }
+
+            // Sync input bounds formatting properly
+            if(currentSoc.value > 100) currentSoc.value = 100;
+            if(currentSoc.value < 0) currentSoc.value = 0;
+
+            // UI updates
+            batteryProgressBar.style.width = soc + '%';
+            displaySocLevel.textContent = soc;
+
+            // Calculate needed energy (kWh)
+            let energy80 = Math.max(0, 80 - soc) * (BATTERY_CAPACITY / 100);
+            let energy100 = Math.max(0, 100 - soc) * (BATTERY_CAPACITY / 100);
+
+            reqEnergy80.textContent = formatDecimal(energy80) + ' kWh';
+            reqEnergy100.textContent = formatDecimal(energy100) + ' kWh';
+
+            // Calculate time (hours) & cost (Baht)
+            let t80 = energy80 / inputPower;
+            let c80 = energy80 * rate;
+            let t100 = energy100 / inputPower;
+            let c100 = energy100 * rate;
+
+            // Avoid division by zero issues
+            if (inputPower <= 0) { t80 = 0; t100 = 0; }
+
+            time80.textContent = formatDecimal(t80);
+            cost80.textContent = formatDecimal(c80);
+            time100.textContent = formatDecimal(t100);
+            cost100.textContent = formatDecimal(c100);
+        }
+
+        // Attach listeners
+        socSlider.addEventListener('input', calculate);
+        currentSoc.addEventListener('input', calculate);
+        chargerPower.addEventListener('input', calculate);
+        powerRate.addEventListener('input', calculate);
+
+        // Initial compute
+        calculate();
+    </script>
+</body>
+
+</html>
