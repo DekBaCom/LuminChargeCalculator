@@ -16,7 +16,7 @@ A modern, web-based calculator designed specifically for **Changan Lumin** owner
   - **Lumin L DC (รองรับชาร์จเร็ว)**: Limits AC charging to 3.3 kW and allows DC Fast Charging up to 30 kW.
 - **Smart Validation**: Shows helpful warnings when input power exceeds the vehicle's onboard charger limits.
 - **Cost Estimation**: Provides clear breakdowns of electricity costs both **Before VAT** and **Including 7% VAT**.
-
+- **User Guide & Reference**: Includes a dedicated `howto.html` page detailing usage instructions, tips for checking station power, and technical charging specifications for the Changan Lumin Series.
 ## 🚀 How to Use
 
 Since this is a client-side (frontend-only) application, there is no complicated setup required!
@@ -38,7 +38,8 @@ Since this is a client-side (frontend-only) application, there is no complicated
 
 ```text
 📦 LuminChargeCalculator
- ┣ 📜 index.html    # The entire application (HTML, CSS, JS)
+ ┣ 📜 index.html    # The main calculator application
+ ┣ 📜 howto.html    # User manual and reference specifications page
  ┗ 📜 README.md     # Project documentation
 ```
 

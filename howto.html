@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คู่มือการใช้งานและข้อมูลอ้างอิง - Changan Lumin EV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #171717;
+            color: #f5f5f5;
+        }
+
+        .gradient-border {
+            border: 1px solid #3f3f46;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center py-10 px-4">
+
+    <!-- Header Section -->
+    <div class="w-full max-w-4xl flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-semibold mb-2 text-white">คู่มือและข้อมูลอ้างอิง</h1>
+            <p class="text-sm text-gray-400">วิธีใช้งานระบบ, วิธีเช็คกำลังไฟ และ ข้อมูลสเปคการชาร์จ Changan Lumin</p>
+        </div>
+        <a href="index.html" class="flex items-center gap-2 bg-[#262626] hover:bg-[#333333] transition-colors border border-neutral-700 px-4 py-2 rounded-lg text-sm font-medium text-blue-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6"/>
+            </svg>
+            กลับหน้าคำนวณ
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-full max-w-4xl flex flex-col gap-8">
+
+        <!-- Section 1: วิธีใช้งาน -->
+        <section class="bg-[#262626] rounded-2xl p-6 md:p-8 shadow-2xl gradient-border">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-blue-500/20 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-white">วิธีใช้งานระบบคำนวณเงินและเวลา</h2>
+            </div>
+            <ul class="space-y-4 text-neutral-300 text-sm md:text-base">
+                <li class="flex items-start gap-3">
+                    <span class="flex items-center justify-center bg-blue-600 text-white font-bold rounded-full w-6 h-6 shrink-0 text-xs">1</span>
+                    <p><strong>เลือกรุ่นรถ:</strong> ให้เลือกรุ่นรถของคุณว่าเป็น <em>Lumin L DC (รองรับชาร์จเร็ว)</em> หรือ <em>Lumin L (รุ่นปกติ/AC เท่านั้น)</em></p>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="flex items-center justify-center bg-blue-600 text-white font-bold rounded-full w-6 h-6 shrink-0 text-xs">2</span>
+                    <p><strong>ตั้งค่าแบตเตอรี่ปัจจุบัน (%):</strong> เลื่อนแถบ Slider หรือพิมพ์ตัวเลข % แบตเตอรี่ที่เหลืออยู่บนหน้าปัดรถของคุณ</p>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="flex items-center justify-center bg-blue-600 text-white font-bold rounded-full w-6 h-6 shrink-0 text-xs">3</span>
+                    <p><strong>กำหนดประเภทตู้และกำลังไฟ:</strong> เลือกตู้ชาร์จแบบ DC หรือ AC และกรอก "กำลังชาร์จ (kW)" สูงสุดของตู้ชาร์จนั้น (อ่านวิธีเช็คด้านล่าง)</p>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="flex items-center justify-center bg-blue-600 text-white font-bold rounded-full w-6 h-6 shrink-0 text-xs">4</span>
+                    <p><strong>กำหนดค่าไฟ:</strong> กรอกอัตราค่าไฟต่อ 1 หน่วย (บาท/kWh) สามารถเช็คได้จากแอปของผู้ให้บริการสถานีชาร์จนั้นๆ</p>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="flex items-center justify-center bg-blue-600 text-white font-bold rounded-full w-6 h-6 shrink-0 text-xs">5</span>
+                    <p>ระบบจะทำการคำนวณเวลาที่ใช้และค่าใช้จ่ายโดยประมาณ <em>(รวมการคูณ VAT 7% ให้ในยอดสุทธิแล้ว)</em> แบ่งเป็นเป้าหมายชาร์จถึง 80% และ 100%</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section 2: วิธีเช็คกำลังไฟ -->
+        <section class="bg-[#262626] rounded-2xl p-6 md:p-8 shadow-2xl gradient-border">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-yellow-500/20 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-white">วิธีเช็คกำลังไฟ (kW) ที่ตู้ชาร์จ</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-neutral-300 whitespace-normal">
+                <div class="bg-[#1e1e1e] p-5 rounded-xl border border-neutral-800">
+                    <h3 class="text-yellow-400 font-semibold mb-3 flex items-center gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                        ดูจากแอปพลิเคชัน
+                    </h3>
+                    <p class="leading-relaxed">เมื่อเปิดแอปพลิเคชันสถานีชาร์จ (เช่น PEA VOLTA, PTT EV Station, EA Anywhere, EVolt, EleXa) ให้กดดูข้อมูลสถานีนั้นๆ จะมีการระบุขนาดกำลังไฟของตู้ให้ทราบ เช่น <span class="bg-neutral-800 text-white px-2 py-0.5 rounded">DC 50kW</span>, <span class="bg-neutral-800 text-white px-2 py-0.5 rounded">DC 120kW</span> หรือ <span class="bg-neutral-800 text-white px-2 py-0.5 rounded">AC 7kW</span> / <span class="bg-neutral-800 text-white px-2 py-0.5 rounded">22kW</span></p>
+                </div>
+                <div class="bg-[#1e1e1e] p-5 rounded-xl border border-neutral-800">
+                    <h3 class="text-yellow-400 font-semibold mb-3 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        ดูที่ป้ายสเปคหน้าตู้ชาร์จ
+                    </h3>
+                    <p class="leading-relaxed">คุณสามารถดูได้ที่หน้าจอของตู้ชาร์จ หรือสติกเกอร์/ป้ายข้อมูล (Nameplate) ที่ติดอยู่ข้างตู้ชาร์จ ซึ่งจะระบุค่า <strong>Max Output Power</strong> เช่น 30 kW, 50 kW, 60 kW เป็นต้น ให้คุณนำตัวเลขนั้นมากรอกลงในระบบ</p>
+                </div>
+            </div>
+            <p class="mt-5 text-xs text-neutral-400 max-w-2xl bg-neutral-900 px-4 py-3 rounded-lg border border-neutral-800 border-l-4 border-l-yellow-600">
+                <strong>💡 ข้อควรทราบ:</strong> แม้ว่าตู้ชาร์จจะปล่อยไฟระดับ 120kW รถ Changan Lumin L DC ก็จะรับไฟสูงสุดตามสเปคของ On-board charger รถเท่านั้น (สูงสุดประมาณ 30kW สำหรับ DC) ระบบของเราได้จำกัดลิมิตการคำนวณนี้ตามตัวรถให้อัตโนมัติแล้ว
+            </p>
+        </section>
+
+        <!-- Section 3: ข้อมูลอ้างอิง Changan Lumin -->
+        <section class="bg-[#262626] rounded-2xl p-6 md:p-8 shadow-2xl gradient-border">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-green-500/20 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-white">ข้อมูลอ้างอิงสเปคการชาร์จ Changan Lumin</h2>
+            </div>
+            
+            <div class="bg-[#1e1e1e] rounded-xl overflow-hidden border border-neutral-800">
+                <table class="w-full text-left text-sm text-neutral-300">
+                    <thead class="bg-neutral-900/50 text-neutral-200">
+                        <tr>
+                            <th class="px-6 py-4 font-medium border-b border-neutral-800">ข้อมูล/สเปคตัวรถ</th>
+                            <th class="px-6 py-4 font-medium border-b border-neutral-800 text-center">Lumin L (รุ่นปกติ)</th>
+                            <th class="px-6 py-4 font-medium border-b border-neutral-800 text-center">Lumin L DC (รุ่นชาร์จเร็ว)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-neutral-800">
+                        <tr class="hover:bg-neutral-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">ความจุแบตเตอรี่ (Battery Capacity)</td>
+                            <td class="px-6 py-4 text-center">27.99 kWh (หรือตีเป็น 28 kWh)</td>
+                            <td class="px-6 py-4 text-center">27.99 kWh (หรือตีเป็น 28 kWh)</td>
+                        </tr>
+                        <tr class="hover:bg-neutral-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">การชาร์จแบบ AC (เครื่องชาร์จ On-board)</td>
+                            <td class="px-6 py-4 text-center">สูงสุด <strong>3.3 kW</strong></td>
+                            <td class="px-6 py-4 text-center">สูงสุด <strong>3.3 kW</strong></td>
+                        </tr>
+                        <tr class="hover:bg-neutral-800/30 transition-colors">
+                            <td class="px-6 py-4 font-medium text-white">ระยะเวลาชาร์จ AC (0-100%)</td>
+                            <td class="px-6 py-4 text-center">ประมาณ 10 - 10.5 ชั่วโมง</td>
+                            <td class="px-6 py-4 text-center">ประมาณ 10 - 10.5 ชั่วโมง</td>
+                        </tr>
+                        <tr class="hover:bg-neutral-800/30 transition-colors bg-green-900/10">
+                            <td class="px-6 py-4 font-medium text-green-400">การชาร์จแบบด่วน DC Fast Charge</td>
+                            <td class="px-6 py-4 text-center text-rose-400">❌ ไม่รองรับ</td>
+                            <td class="px-6 py-4 text-center text-green-400">✅ รองรับสูงสุด <strong>30 kW</strong></td>
+                        </tr>
+                        <tr class="hover:bg-neutral-800/30 transition-colors bg-green-900/10">
+                            <td class="px-6 py-4 font-medium text-green-400">ระยะเวลาชาร์จ DC (30-80%)</td>
+                            <td class="px-6 py-4 text-center text-neutral-500">-</td>
+                            <td class="px-6 py-4 text-center font-medium">ประมาณ 35 นาที</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 flex flex-col md:flex-row gap-4">
+                <div class="bg-neutral-900 flex-1 p-4 rounded-xl border border-neutral-800 text-sm">
+                    <h4 class="text-white font-medium mb-2 flex items-center gap-2">หัวชาร์จฝั่งตัวรถประเภทต่างๆ</h4>
+                    <p class="text-neutral-400 leading-relaxed">
+                        Lumin ใช้ช่องชาร์จ <strong>GB/T</strong> (สำหรับรุ่นนำเข้า/บางล็อตตลาดอื่นๆ) หรือ <strong>Type 2 / CCS2</strong> (ในรุ่นที่ขายในไทย) หากจะชาร์จที่สถานีสาธารณะ ต้องมั่นใจว่าทางสถานีมีหัวชาร์จตรงกับช่องชาร์จของรถคุณ 
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-10 mb-6 text-center text-xs text-neutral-500 w-full max-w-4xl mx-auto">
+        <p>Contribute by Abdulloh Etaeluengoh | Email: <a href="mailto:Abdulloh.eg@gmail.com" class="text-blue-400 hover:text-blue-300 transition-colors">Abdulloh.eg@gmail.com</a></p>
+    </footer>
+
+</body>
+</html>
