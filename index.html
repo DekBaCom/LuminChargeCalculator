@@ -168,49 +168,64 @@
 
         <!-- Controls -->
         <div class="flex flex-col gap-6 text-sm px-2">
-            <!-- Row 1: SOC and Power -->
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                <!-- Battery % -->
-                <div class="flex items-center gap-4 w-full md:w-3/5">
-                    <span class="font-medium text-neutral-300 whitespace-nowrap min-w-[150px]">แบตเตอรี่ปัจจุบัน (%)</span>
-                    <input type="range" id="socSlider" min="0" max="100" value="20" class="flex-1">
+            <!-- Row 1: Battery % -->
+            <div class="flex items-center gap-4 w-full">
+                <span class="font-medium text-neutral-300 whitespace-nowrap min-w-[140px]">แบตเตอรี่ปัจจุบัน (%)</span>
+                <input type="range" id="socSlider" min="0" max="100" value="20" class="flex-1">
+                <div
+                    class="bg-[#1e1e1e] border border-neutral-700/50 rounded-full px-2 py-0.5 h-9 flex items-center justify-center shrink-0">
+                    <input type="number" id="currentSoc" min="0" max="100" value="20"
+                        class="w-12 bg-transparent text-center focus:outline-none text-white text-base">
+                </div>
+            </div>
+
+            <!-- Row 2: Type, Power, Rate -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Type -->
+                <div class="flex items-center justify-between md:justify-start gap-4">
+                    <span class="font-medium text-neutral-300 whitespace-nowrap">ประเภทตู้</span>
+                    <div class="bg-[#1e1e1e] border border-neutral-700/50 rounded-lg h-9 flex items-center px-1">
+                        <select id="chargerType" class="bg-transparent focus:outline-none text-white text-sm w-full h-full cursor-pointer outline-none">
+                            <option value="DC" class="bg-neutral-800">DC Fast</option>
+                            <option value="AC" class="bg-neutral-800">AC Normal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Power -->
+                <div class="flex items-center justify-between md:justify-start gap-4">
+                    <span class="font-medium text-neutral-300 whitespace-nowrap">กำลังชาร์จ (kW)</span>
                     <div
-                        class="bg-[#1e1e1e] border border-neutral-700/50 rounded-full px-2 py-0.5 h-9 flex items-center justify-center shrink-0">
-                        <input type="number" id="currentSoc" min="0" max="100" value="20"
+                        class="bg-[#1e1e1e] border border-neutral-700/50 rounded-lg px-2 py-0.5 h-9 flex items-center justify-center shrink-0">
+                        <input type="number" id="chargerPower" value="30"
                             class="w-12 bg-transparent text-center focus:outline-none text-white text-base">
                     </div>
                 </div>
 
-                <!-- Charger Power -->
-                <div class="flex items-center gap-4 w-full md:w-auto">
-                    <span class="font-medium text-neutral-300 whitespace-nowrap">กำลังตู้ชาร์จ (kW)</span>
-                    <div
-                        class="bg-[#1e1e1e] border border-neutral-700/50 rounded-lg px-2 py-0.5 h-9 flex items-center justify-center shrink-0">
-                        <input type="number" id="chargerPower" value="30"
-                            class="w-16 bg-transparent text-center focus:outline-none text-white text-base">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Row 2: Power Rate -->
-            <div class="flex flex-col md:flex-row items-center gap-6">
-                <div class="flex items-center gap-4 w-full">
-                    <span class="font-medium text-neutral-300 whitespace-nowrap min-w-[150px]">ค่าไฟ (บาท/kWh)</span>
+                <!-- Rate -->
+                <div class="flex items-center justify-between md:justify-start gap-4">
+                    <span class="font-medium text-neutral-300 whitespace-nowrap">ค่าไฟ (บาท)</span>
                     <div
                         class="bg-[#1e1e1e] border border-neutral-700/50 rounded-lg px-2 py-0.5 h-9 flex items-center justify-center shrink-0">
                         <input type="number" id="powerRate" value="7.5" step="0.1"
-                            class="w-16 bg-transparent text-center focus:outline-none text-white text-base">
+                            class="w-12 bg-transparent text-center focus:outline-none text-white text-base">
                     </div>
                 </div>
             </div>
+            
+            <p id="acWarning" class="text-rose-400 text-xs text-center hidden">*ระบบรับไฟ AC ได้สูงสุดที่ 3.3 kW ตามสเปครถ Changan Lumin</p>
         </div>
 
     </div>
 
     <script>
         const BATTERY_CAPACITY = 28; // ความจุแบตเตอรี่ Changan Lumin kWh
+        const AC_LIMIT = 3.3; // ข้อจำกัด On-board charger ของ Lumin
 
         // ดึง DOM Elements
+        const chargerType = document.getElementById('chargerType');
+        const acWarning = document.getElementById('acWarning');
+
         const socSlider = document.getElementById('socSlider');
         const currentSoc = document.getElementById('currentSoc');
         const chargerPower = document.getElementById('chargerPower');
@@ -235,6 +250,16 @@
             let soc = parseFloat(currentSoc.value) || 0;
             let inputPower = parseFloat(chargerPower.value) || 1;
             let rate = parseFloat(powerRate.value) || 0;
+            let type = chargerType.value;
+
+            // Actual power logic based on charger type
+            let actualPower = inputPower;
+            if (type === 'AC') {
+                actualPower = Math.min(inputPower, AC_LIMIT);
+                acWarning.classList.remove('hidden');
+            } else {
+                acWarning.classList.add('hidden');
+            }
 
             // Limit bounds
             if (soc > 100) { soc = 100; }
@@ -264,13 +289,13 @@
             reqEnergy100.textContent = formatDecimal(energy100) + ' kWh';
 
             // Calculate time (hours) & cost (Baht)
-            let t80 = energy80 / inputPower;
+            let t80 = energy80 / actualPower;
             let c80 = energy80 * rate;
-            let t100 = energy100 / inputPower;
+            let t100 = energy100 / actualPower;
             let c100 = energy100 * rate;
 
             // Avoid division by zero issues
-            if (inputPower <= 0) { t80 = 0; t100 = 0; }
+            if (actualPower <= 0) { t80 = 0; t100 = 0; }
 
             time80.textContent = formatDecimal(t80);
             cost80.textContent = formatDecimal(c80);
@@ -279,6 +304,7 @@
         }
 
         // Attach listeners
+        chargerType.addEventListener('change', calculate);
         socSlider.addEventListener('input', calculate);
         currentSoc.addEventListener('input', calculate);
         chargerPower.addEventListener('input', calculate);
